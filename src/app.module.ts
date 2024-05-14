@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { NewfeedModule } from './newfeed/newfeed.module';
 import { AuthModule } from './auth/auth.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { AuthModule } from './auth/auth.module';
     }),
     NewfeedModule,
     AuthModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

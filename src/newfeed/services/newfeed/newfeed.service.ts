@@ -22,10 +22,10 @@ export class NewfeedService {
         return from(this.postRepository.save(post));
     }
 
-    getAllPost(): Observable<PostModel[]> {
+    getAllPost(user: User): Observable<PostModel[]> {
         return from(this.postRepository.find({
-            relations: ['author'],
-            select: ['id', 'body', 'imagePath', 'createdAt', 'author']
+            where: { author: user },
+            relations: ['author', 'comments'],
         }));
     }
 
@@ -37,20 +37,26 @@ export class NewfeedService {
         return from(this.postRepository.delete(id));
     }
 
-    updatePostImageById(id: number, imagePath: string): Observable<UpdateResult> {
-        const user: User = new PostEntity();
-        user.id = id;
-        user.imagePath = imagePath;
+    updateLikeByPostId(id: number, post: PostModel) {
+        return from(this.postRepository.update(id, {
+            totalLike: post.totalLike ? post.totalLike++ : 1
+        }));
+    }
 
-        return from(this.postRepository.update(id, user));
+    updatePostImageById(id: number, imagePath: string): Observable<UpdateResult> {
+        const post: PostModel = new PostEntity();
+        post.id = id;
+        post.imagePath = imagePath;
+
+        return from(this.postRepository.update(id, post));
     }
 
     findImageNameByPostId(id: number): Observable<string> {
         return from(this.postRepository.findOne({
             where: { id }
         })).pipe(
-            map((user: User) => {
-                return user.imagePath;
+            map((post: PostModel) => {
+                return post.imagePath;
             }),
         );
     }

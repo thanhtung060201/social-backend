@@ -5,16 +5,13 @@ import { PostModel } from 'src/newfeed/models/post.model';
 import { map, Observable, of, switchMap } from 'rxjs';
 import { DeleteResult, UpdateResult } from 'typeorm';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
-import { join } from '@angular-devkit/core';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { saveImageToStorage } from 'src/auth/helpers/image-storage';
 
 @Controller('newfeed')
 export class NewfeedController {
 
-    constructor(private newfeedService: NewfeedService) {
-
-    }
+    constructor(private newfeedService: NewfeedService) {}
 
     @UseGuards(JwtGuard)
     @Post()
@@ -24,8 +21,8 @@ export class NewfeedController {
 
     @UseGuards(JwtGuard)
     @Get()
-    getAllPost(): Observable<PostModel[]> {
-        return this.newfeedService.getAllPost();
+    getAllPost(@Request() req): Observable<PostModel[]> {
+        return this.newfeedService.getAllPost(req.user);
     }
 
     @UseGuards(JwtGuard)
@@ -44,13 +41,22 @@ export class NewfeedController {
     }
 
     @UseGuards(JwtGuard)
-    @Post('upload')
+    @Put('like/:id')
+    updateLikeByPostId(
+        @Param('id') id: number,
+        @Body() post: PostModel
+    ): Observable<UpdateResult> {
+        return this.newfeedService.updateLikeByPostId(id, post);
+    }
+
+    @UseGuards(JwtGuard)
+    @Post('upload/:id')
     @UseInterceptors(FileInterceptor('file', saveImageToStorage))
     uploadImage(
         @UploadedFile() file: Express.Multer.File,
-        @Request() req,
+        @Param('id') id: any
     ): Observable<{ modifiedFileName: string } | { error: string }> {
-        console.log(file);
+        console.log(id);
         const fileName = file?.filename;
 
         if (!fileName) return of({error: 'File must be a png, jpg/jpeg'});
@@ -58,7 +64,7 @@ export class NewfeedController {
         // const imagesFolderPath = join(process.cwd(), 'images');
         // const fullImagePath = join(imagesFolderPath + '/' + file.filename);
 
-        const postId = req.post.id;
+        const postId = +id;
         return this.newfeedService.updatePostImageById(postId, fileName).pipe(
             map(() => ({
                 modifiedFileName: file.filename,
@@ -67,9 +73,9 @@ export class NewfeedController {
     }
 
     @UseGuards(JwtGuard)
-    @Get('image')
-    findImage(@Request() req, @Res() res): Observable<object> {
-        const postId = req.post.id;
+    @Get('image/:id')
+    findImage(@Param('id') id: any, @Res() res): Observable<object> {
+        const postId = id;
         return this.newfeedService.findImageNameByPostId(postId).pipe(
             switchMap((imageName: string) => {
                 return of(res.sendFile(imageName, {root: './images'}));
@@ -78,9 +84,9 @@ export class NewfeedController {
     }
 
     @UseGuards(JwtGuard)
-    @Get('image-name')
-    findUserImageName(@Request() req): Observable<{ imageName: string }> {
-        const postId = req.post.id;
+    @Get('image-name/:id')
+    findPostImageName(@Param('id') id: any): Observable<{ imageName: string }> {
+        const postId = id;
         return this.newfeedService.findImageNameByPostId(postId).pipe(
             switchMap((imageName: string) => {
                 return of({imageName});

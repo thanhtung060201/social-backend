@@ -1,10 +1,11 @@
 /* eslint-disable prettier/prettier */
 import { User } from "src/auth/models/user.interface";
+import { PostModel } from "src/newfeed/models/post.model";
 
-export interface NewFeedPost {
+export interface CommentModel {
   id?: number;
-  body?: string;
-  imagePath?: string;
+  content?: string;
   createdAt?: Date;
   author?: User;
+  post?: PostModel;
 }

@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
-import { NewFeedPost } from "src/newfeed/models/post.interface";
 import { Role } from "./role.enum";
+import { CommentModel } from "src/comment/models/comment.interface";
+import { PostModel } from "src/newfeed/models/post.model";
 
 
 export class User {
@@ -11,5 +12,6 @@ export class User {
     password?: string;
     imagePath?: string;
     role?: Role;
-    posts?: NewFeedPost[];
+    posts?: PostModel[];
+    comments?: CommentModel[];
 }

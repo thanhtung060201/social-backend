@@ -9,6 +9,7 @@ import { JwtGuard } from './guards/jwt.guard';
 import { JwtStrategy } from './guards/jwt.stragery';
 import { UserService } from './services/user/user.service';
 import { UserController } from './controllers/user/user.controller';
+import { FriendRequestEntity } from './models/friend-request.entity';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { UserController } from './controllers/user/user.controller';
         signOptions: { expiresIn: '3600s' },
       }),
     }),
-    TypeOrmModule.forFeature([UserEntity]),
+    TypeOrmModule.forFeature([UserEntity, FriendRequestEntity]),
   ],
   providers: [AuthService, JwtGuard, JwtStrategy, UserService],
   controllers: [AuthController, UserController],

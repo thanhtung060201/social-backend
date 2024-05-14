@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { UserEntity } from "src/auth/models/user.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { CommentEntity } from "src/comment/models/comment.entity";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('post')
 export class PostEntity {
@@ -18,6 +19,12 @@ export class PostEntity {
     createdAt: Date;
 
     @ManyToOne(() => UserEntity, (userEntity) => userEntity.newFeedPosts)
-    author: UserEntity
+    author: UserEntity;
+
+    @OneToMany(() => CommentEntity, (commentEntity) => commentEntity.post)
+    comments: CommentEntity[];
+
+    @Column({ nullable: true })
+    totalLike: number;
 
 }
