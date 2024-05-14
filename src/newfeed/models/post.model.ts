@@ -2,6 +2,7 @@
 
 import { User } from "src/auth/models/user.interface";
 import { CommentModel } from "src/comment/models/comment.interface";
+import { TagModel } from "src/tag/models/tag.model";
 
 export interface PostModel {
   id?: number;
@@ -11,4 +12,5 @@ export interface PostModel {
   author?: User;
   comments?: CommentModel[];
   totalLike?: number;
+  tags?: TagModel[];
 }

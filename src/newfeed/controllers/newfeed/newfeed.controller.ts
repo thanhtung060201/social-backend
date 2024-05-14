@@ -7,6 +7,7 @@ import { DeleteResult, UpdateResult } from 'typeorm';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { saveImageToStorage } from 'src/auth/helpers/image-storage';
+import { TagModel } from 'src/tag/models/tag.model';
 
 @Controller('newfeed')
 export class NewfeedController {
@@ -15,8 +16,8 @@ export class NewfeedController {
 
     @UseGuards(JwtGuard)
     @Post()
-    createPost(@Body() post: PostModel, @Request() req): Observable<PostModel> {
-        return this.newfeedService.createPost(req.user, post);
+    createPost(@Body() data: { post: PostModel, tags: TagModel[]}, @Request() req): Observable<PostModel> {
+        return this.newfeedService.createPost(req.user, data.post, data.tags);
     }
 
     @UseGuards(JwtGuard)

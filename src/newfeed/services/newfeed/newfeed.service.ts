@@ -5,6 +5,7 @@ import { from, map, Observable } from 'rxjs';
 import { User } from 'src/auth/models/user.interface';
 import { PostEntity } from 'src/newfeed/models/post.entity';
 import { PostModel } from 'src/newfeed/models/post.model';
+import { TagModel } from 'src/tag/models/tag.model';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 
 @Injectable()
@@ -17,15 +18,16 @@ export class NewfeedService {
 
     }
 
-    createPost(user: User, post: PostModel): Observable<PostModel> {
+    createPost(user: User, post: PostModel, tags: TagModel[]): Observable<PostModel> {
         post.author = user;
+        post.tags = tags;
         return from(this.postRepository.save(post));
     }
 
     getAllPost(user: User): Observable<PostModel[]> {
         return from(this.postRepository.find({
             where: { author: user },
-            relations: ['author', 'comments'],
+            relations: ['author', 'comments', 'tags'],
         }));
     }
 

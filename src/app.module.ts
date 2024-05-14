@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { NewfeedModule } from './newfeed/newfeed.module';
 import { AuthModule } from './auth/auth.module';
 import { CommentModule } from './comment/comment.module';
+import { TagModule } from './tag/tag.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { CommentModule } from './comment/comment.module';
     NewfeedModule,
     AuthModule,
     CommentModule,
+    TagModule,
   ],
   controllers: [AppController],
   providers: [AppService],

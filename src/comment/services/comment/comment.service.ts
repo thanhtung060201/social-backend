@@ -1,8 +1,8 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Observable, from } from 'rxjs';
 import { UserEntity } from 'src/auth/models/user.entity';
-import { User } from 'src/auth/models/user.interface';
 import { CommentEntity } from 'src/comment/models/comment.entity';
 import { CommentModel } from 'src/comment/models/comment.interface';
 import { PostEntity } from 'src/newfeed/models/post.entity';

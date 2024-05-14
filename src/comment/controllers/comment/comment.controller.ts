@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Body, Controller, Delete, Param, Post, Put, Request, UseGuards } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
