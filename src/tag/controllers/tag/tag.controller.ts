@@ -12,13 +12,13 @@ export class TagController {
 
     @UseGuards(JwtGuard)
     @Get()
-    getAllPost(): Observable<TagModel[]> {
+    getAllTags(): Observable<TagModel[]> {
         return this.tagService.getAllTags();
     }
 
     @UseGuards(JwtGuard)
     @Post()
-    createPost(@Body() data: { postId: number, name: string }) {
+    createTags(@Body() data: { postId: number, name: string }) {
         return this.tagService.createTags(data.name, data.postId);
     }
 }
