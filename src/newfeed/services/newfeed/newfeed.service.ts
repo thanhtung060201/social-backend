@@ -26,7 +26,7 @@ export class NewfeedService {
 
     getAllPost(user: User): Observable<PostModel[]> {
         return from(this.postRepository.find({
-            where: { author: user },
+            where: { author: user, isDeleted: false },
             relations: ['author', 'comments', 'tags'],
         }));
     }
@@ -35,8 +35,12 @@ export class NewfeedService {
         return from(this.postRepository.update(id, post));
     }
 
-    deletePost(id: number): Observable<DeleteResult> {
-        return from(this.postRepository.delete(id));
+    deletePost(id: number, post: PostModel): Observable<DeleteResult> {
+        return from(this.postRepository.update(id, {
+            ...post,
+            isDeleted: true
+        }));
+        // return from(this.postRepository.delete(id));
     }
 
     updateLikeByPostId(id: number, post: PostModel) {

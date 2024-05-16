@@ -30,6 +30,7 @@ export class TagService {
         }
 
         const newTags = new TagEntity();
+        console.log(newTags);
         newTags.name = name;
         newTags.post = post;
 

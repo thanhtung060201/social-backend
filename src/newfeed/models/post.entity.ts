@@ -16,6 +16,9 @@ export class PostEntity {
     @Column({ nullable: true })
     imagePath: string;
 
+    @Column({ default: false })
+    isDeleted: boolean;
+
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;
 

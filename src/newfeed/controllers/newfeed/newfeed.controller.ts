@@ -36,9 +36,9 @@ export class NewfeedController {
     }
 
     @UseGuards(JwtGuard)
-    @Delete(':id')
-    deletePost(@Param('id') id: number): Observable<DeleteResult> {
-        return this.newfeedService.deletePost(id);
+    @Put('delete/:id')
+    deletePost(@Param('id') id: number, @Body() post: PostModel): Observable<DeleteResult> {
+        return this.newfeedService.deletePost(id, post);
     }
 
     @UseGuards(JwtGuard)
