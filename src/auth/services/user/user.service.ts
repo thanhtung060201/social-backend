@@ -95,7 +95,7 @@ export class UserService {
                     error:
                       'A friend request has already been sent of received to your account!',
                   });
-                let friendRequest: FriendRequest = {
+                const friendRequest: FriendRequest = {
                   creator,
                   receiver,
                   status: 'pending',
@@ -180,7 +180,7 @@ export class UserService {
           }),
         ).pipe(
           switchMap((friends: FriendRequest[]) => {
-            let userIds: number[] = [];
+            const userIds: number[] = [];
     
             friends.forEach((friend: FriendRequest) => {
               if (friend.creator.id === currentUser.id) {
