@@ -25,6 +25,21 @@ export class UserEntity {
     @Column({ nullable: true })
     imagePath: string;
 
+    @Column({ nullable: true })
+    description: string;
+
+    @Column({ nullable: true })
+    address: string;
+
+    @Column({ nullable: true })
+    education: string;
+
+    @Column({ nullable: true })
+    dob: Date;
+
+    @Column({ nullable: true })
+    gender: string;
+
     @Column({ type: 'enum', enum: Role, default: Role.USER })
     role: Role;
 

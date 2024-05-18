@@ -12,6 +12,11 @@ export class User {
     email?: string;
     password?: string;
     imagePath?: string;
+    description?: string;
+    address?: string;
+    education?: string;
+    dob?: Date;
+    gender?: string;
     role?: Role;
     posts?: PostModel[];
     comments?: CommentModel[];

@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+import { MailerService } from '@nest-modules/mailer';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -6,13 +7,14 @@ import * as bcrypt from 'bcrypt';
 import { from, map, Observable, switchMap, tap } from 'rxjs';
 import { UserEntity } from 'src/auth/models/user.entity';
 import { User } from 'src/auth/models/user.interface';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 
 @Injectable()
 export class AuthService {
     constructor(
         @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
-        private jwtService: JwtService
+        private jwtService: JwtService,
+        private mailerService: MailerService
     ) {
 
     }
@@ -22,7 +24,6 @@ export class AuthService {
     }
 
     registerAccount(user: User): Observable<User> {
-        console.log(user);
         const { firstName, lastName, email, password } = user;
 
         // return this.doesUserExist(email).pipe(
@@ -106,6 +107,27 @@ export class AuthService {
                 if (user) {
                     return from(this.jwtService.signAsync({ user }));
                 }
+            }),
+        );
+    }
+
+    changePassword(id: number, user: User): Observable<UpdateResult> {
+        const password = user.password;
+        return this.hashPassword(user.password).pipe(
+            switchMap((hashedPassword: string) => {
+                this.mailerService.sendMail({
+                    to: 'thanhtung060201@gmail.com',
+                    from: 'Asdfasdf@gmail.com',
+                    subject: 'Đổi mật khẩu',
+                    text: 'Chào Thanh Tùng',
+                    html: `Bạn đã đổi mật khẩu mới thành <b>${{password}}</b> vào lúc <b>${new Date()}</b>`
+                })
+                return from(
+                    this.userRepository.update(id, {
+                        ...user,
+                        password: hashedPassword,
+                    }),
+                )
             }),
         );
     }

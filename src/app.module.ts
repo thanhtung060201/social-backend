@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -7,6 +8,7 @@ import { NewfeedModule } from './newfeed/newfeed.module';
 import { AuthModule } from './auth/auth.module';
 import { CommentModule } from './comment/comment.module';
 import { TagModule } from './tag/tag.module';
+import { MailerModule } from '@nest-modules/mailer';
 
 @Module({
   imports: [
@@ -20,6 +22,19 @@ import { TagModule } from './tag/tag.module';
       database: process.env.POSTGRES_DATABASE,
       autoLoadEntities: true,
       synchronize: true,
+    }),
+    MailerModule.forRoot({
+      transport: {
+        host: 'smtp.gmail.com',
+        secure: false,
+        auth: {
+          user: 'thanhtung060201@gmail.com',
+          pass: 'ouzscljedzphiren',
+        },
+      },
+      defaults: {
+        from: `"No Reply" <Asdfasdf@gmail.com}>`,
+      },
     }),
     NewfeedModule,
     AuthModule,
