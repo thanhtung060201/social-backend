@@ -11,7 +11,7 @@ export class TagEntity {
     @Column({ default: '' })
     name: string;
 
-    @ManyToOne(() => PostEntity, (postEntity) => postEntity.comments)
+    @ManyToOne(() => PostEntity, (postEntity) => postEntity.comments, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
     post: PostEntity;
 
 }

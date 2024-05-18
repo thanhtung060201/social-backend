@@ -16,9 +16,6 @@ export class PostEntity {
     @Column({ nullable: true })
     imagePath: string;
 
-    @Column({ default: false })
-    isDeleted: boolean;
-
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;
 
@@ -28,7 +25,7 @@ export class PostEntity {
     @OneToMany(() => CommentEntity, (commentEntity) => commentEntity.post)
     comments: CommentEntity[];
 
-    @OneToMany(() => TagEntity, (tagEntity) => tagEntity.post)
+    @OneToMany(() => TagEntity, (tagEntity) => tagEntity.post, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
     tags: TagEntity[];
 
     @Column({ nullable: true })

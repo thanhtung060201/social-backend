@@ -21,6 +21,12 @@ export class NewfeedController {
     }
 
     @UseGuards(JwtGuard)
+    @Get(':id')
+    getPostById(@Param('id') id: number): Observable<PostModel> {
+        return this.newfeedService.getPostById(id);
+    }
+
+    @UseGuards(JwtGuard)
     @Get()
     getAllPost(@Request() req): Observable<PostModel[]> {
         return this.newfeedService.getAllPost(req.user);
@@ -32,13 +38,13 @@ export class NewfeedController {
         @Param('id') id: number,
         @Body() post: PostModel
     ): Observable<UpdateResult> {
-        return this.newfeedService.updatePost(id, post);
+        return this.newfeedService.updatePost(post);
     }
 
     @UseGuards(JwtGuard)
-    @Put('delete/:id')
-    deletePost(@Param('id') id: number, @Body() post: PostModel): Observable<DeleteResult> {
-        return this.newfeedService.deletePost(id, post);
+    @Delete('delete/:id')
+    deletePost(@Param('id') id: number): Observable<DeleteResult> {
+        return this.newfeedService.deletePost(id);
     }
 
     @UseGuards(JwtGuard)

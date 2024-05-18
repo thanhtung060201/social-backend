@@ -8,7 +8,6 @@ export interface PostModel {
   id?: number;
   body?: string;
   imagePath?: string;
-  isDeleted?: boolean;
   createdAt?: Date;
   author?: User;
   comments?: CommentModel[];

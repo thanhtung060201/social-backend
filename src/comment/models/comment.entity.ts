@@ -18,7 +18,7 @@ export class CommentEntity {
     @ManyToOne(() => UserEntity, (userEntity) => userEntity.comments)
     author: UserEntity;
 
-    @ManyToOne(() => PostEntity, (postEntity) => postEntity.comments)
+    @ManyToOne(() => PostEntity, (postEntity) => postEntity.comments, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
     post: PostEntity;
 
 }

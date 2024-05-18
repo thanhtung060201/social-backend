@@ -24,22 +24,26 @@ export class NewfeedService {
         return from(this.postRepository.save(post));
     }
 
-    getAllPost(user: User): Observable<PostModel[]> {
-        return from(this.postRepository.find({
-            where: { author: user, isDeleted: false },
+    getPostById(postId: number): Observable<PostModel> {
+        return from(this.postRepository.findOne({
+            where: { id: postId },
             relations: ['author', 'comments', 'tags'],
         }));
     }
 
-    updatePost(id: number, post: PostModel): Observable<UpdateResult> {
-        return from(this.postRepository.update(id, post));
+    getAllPost(user: User): Observable<PostModel[]> {
+        return from(this.postRepository.find({
+            where: { author: user },
+            relations: ['author', 'comments', 'tags'],
+        }));
     }
 
-    deletePost(id: number, post: PostModel): Observable<DeleteResult> {
-        return from(this.postRepository.update(id, {
-            ...post,
-            isDeleted: true
-        }));
+    updatePost(post: PostModel): Observable<any> {
+        return from(this.postRepository.save(post));
+    }
+
+    deletePost(id: number): Observable<DeleteResult> {
+        return from(this.postRepository.delete(id));
         // return from(this.postRepository.delete(id));
     }
 
