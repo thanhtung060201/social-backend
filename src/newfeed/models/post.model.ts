@@ -2,6 +2,7 @@
 
 import { User } from "src/auth/models/user.interface";
 import { CommentModel } from "src/comment/models/comment.interface";
+import { FavoriteModel } from "src/favorite/models/favorite.interface";
 import { TagModel } from "src/tag/models/tag.model";
 
 export interface PostModel {
@@ -11,6 +12,6 @@ export interface PostModel {
   createdAt?: Date;
   author?: User;
   comments?: CommentModel[];
-  totalLike?: number;
+  favorites?: FavoriteModel[];
   tags?: TagModel[];
 }

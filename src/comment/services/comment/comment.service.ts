@@ -19,11 +19,20 @@ export class CommentService {
 
     }
 
+    async getCommentByPostId(postId: any) {
+        const queryBuilder = this.commentRepository.createQueryBuilder('comment');
+
+        queryBuilder.where('comment.postId = :postId', { postId });
+
+        queryBuilder.leftJoinAndSelect('comment.author', 'author');
+      
+        return await queryBuilder.getMany();
+    }
+
     async createComment(user: UserEntity, postId: number, content: string) {
         const post = await this.postRepository.findOne({
-            where: { id: postId }
+            where: { id: postId },
         });
-        
 
         if (!post) {
             throw new Error('Post not found');

@@ -1,16 +1,16 @@
 /* eslint-disable prettier/prettier */
 import { UserEntity } from "src/auth/models/user.entity";
 import { PostEntity } from "src/newfeed/models/post.entity";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity('comment')
-export class CommentEntity {
+@Entity('favorite')
+export class FavoriteEntity {
 
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ default: '' })
-    content: string;
+    @Column()
+    userId: number;
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;
@@ -19,7 +19,6 @@ export class CommentEntity {
     author: UserEntity;
 
     @ManyToOne(() => PostEntity, (postEntity) => postEntity.comments, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
-    // @JoinColumn({ name: 'id' })
     post: PostEntity;
 
 }

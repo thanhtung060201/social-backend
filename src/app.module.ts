@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { CommentModule } from './comment/comment.module';
 import { TagModule } from './tag/tag.module';
 import { MailerModule } from '@nest-modules/mailer';
+import { FavoriteModule } from './favorite/favorite.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { MailerModule } from '@nest-modules/mailer';
     AuthModule,
     CommentModule,
     TagModule,
+    FavoriteModule,
   ],
   controllers: [AppController],
   providers: [AppService],

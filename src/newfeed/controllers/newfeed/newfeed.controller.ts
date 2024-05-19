@@ -48,15 +48,6 @@ export class NewfeedController {
     }
 
     @UseGuards(JwtGuard)
-    @Put('like/:id')
-    updateLikeByPostId(
-        @Param('id') id: number,
-        @Body() post: PostModel
-    ): Observable<UpdateResult> {
-        return this.newfeedService.updateLikeByPostId(id, post);
-    }
-
-    @UseGuards(JwtGuard)
     @Post('upload/:id')
     @UseInterceptors(FileInterceptor('file', saveImageToStorage))
     uploadImage(
