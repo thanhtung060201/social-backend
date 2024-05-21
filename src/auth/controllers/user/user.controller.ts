@@ -66,6 +66,12 @@ export class UserController {
     }
 
     @UseGuards(JwtGuard)
+    @Get('search/:searchTerm')
+    searchUserByName(@Param('searchTerm') searchTerm): Observable<object> {
+      return this.userService.searchUserByName(searchTerm);
+    }
+
+    @UseGuards(JwtGuard)
     @Get('image-name')
     findUserImageName(@Request() req): Observable<{ imageName: string }> {
         const userId = req.user.id;
@@ -76,7 +82,7 @@ export class UserController {
         );
     }
 
-    @UseGuards(JwtGuard)
+    // @UseGuards(JwtGuard)
     @Get(':userId')
     findUserById(@Param('userId') userStringId): Observable<User> {
         const userId = parseInt(userStringId);
@@ -132,7 +138,7 @@ export class UserController {
       );
     }
   
-    @UseGuards(JwtGuard)
+    // @UseGuards(JwtGuard)
     @Get('friend-request/me/received-requests')
     getFriendRequestsFromRecipients(
       @Request() req,

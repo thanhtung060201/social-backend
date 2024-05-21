@@ -31,6 +31,26 @@ export class NewfeedService {
         }));
     }
 
+    async getPostByUserId(authorId: number) {
+        const queryBuilder = this.postRepository.createQueryBuilder('post');
+
+        queryBuilder.where('post.authorId = :authorId', { authorId });
+
+        queryBuilder.leftJoinAndSelect('post.author', 'author');
+      
+        return await queryBuilder.getMany();
+    }
+
+    async getPostByTagName(tagId: string) {
+        const queryBuilder = this.postRepository.createQueryBuilder('post');
+
+        queryBuilder.where('post.tagId = :tagId', { tagId });
+
+        queryBuilder.leftJoinAndSelect('post.author', 'author');
+      
+        return await queryBuilder.getMany();
+    }
+
     getAllPost(user: User): Observable<PostModel[]> {
         return from(this.postRepository.find({
             where: { author: user },

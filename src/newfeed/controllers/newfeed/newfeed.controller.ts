@@ -21,6 +21,18 @@ export class NewfeedController {
     }
 
     @UseGuards(JwtGuard)
+    @Get('tag/:id')
+    getPostByTagName(@Param('id') id: string) {
+        return this.newfeedService.getPostByTagName(id);
+    }
+
+    @UseGuards(JwtGuard)
+    @Get('user/:id')
+    getPostByUserId(@Param('id') id: number) {
+        return this.newfeedService.getPostByUserId(id);
+    }
+
+    @UseGuards(JwtGuard)
     @Get(':id')
     getPostById(@Param('id') id: number): Observable<PostModel> {
         return this.newfeedService.getPostById(id);
