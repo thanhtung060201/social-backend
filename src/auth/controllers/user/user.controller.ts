@@ -82,7 +82,7 @@ export class UserController {
         );
     }
 
-    // @UseGuards(JwtGuard)
+    @UseGuards(JwtGuard)
     @Get(':userId')
     findUserById(@Param('userId') userStringId): Observable<User> {
         const userId = parseInt(userStringId);

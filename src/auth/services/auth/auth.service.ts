@@ -4,7 +4,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
-import { from, map, Observable, switchMap, tap } from 'rxjs';
+import { catchError, from, map, Observable, of, switchMap, tap } from 'rxjs';
 import { UserEntity } from 'src/auth/models/user.entity';
 import { User } from 'src/auth/models/user.interface';
 import { Repository, UpdateResult } from 'typeorm';
@@ -120,7 +120,7 @@ export class AuthService {
                     from: 'Asdfasdf@gmail.com',
                     subject: 'Đổi mật khẩu',
                     text: 'Chào Thanh Tùng',
-                    html: `Bạn đã đổi mật khẩu mới thành <b>${{password}}</b> vào lúc <b>${new Date()}</b>`
+                    html: `Bạn đã đổi mật khẩu mới thành <b>${{ password }}</b> vào lúc <b>${new Date()}</b>`
                 })
                 return from(
                     this.userRepository.update(id, {
@@ -128,6 +128,17 @@ export class AuthService {
                         password: hashedPassword,
                     }),
                 )
+            }),
+        );
+    }
+
+    getJwtUser(jwt: string): Observable<User | null> {
+        return from(this.jwtService.verifyAsync(jwt)).pipe(
+            map(({ user }: { user: User }) => {
+                return user;
+            }),
+            catchError(() => {
+                return of(null);
             }),
         );
     }

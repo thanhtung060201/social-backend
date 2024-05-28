@@ -1,9 +1,11 @@
 /* eslint-disable prettier/prettier */
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Role } from "./role.enum";
 import { PostEntity } from "src/newfeed/models/post.entity";
 import { CommentEntity } from "src/comment/models/comment.entity";
 import { FriendRequestEntity } from "./friend-request.entity";
+import { ConversationEntity } from "src/chat/models/conversation.entity";
+import { MessageEntity } from "src/chat/models/message.entity";
 
 @Entity('user')
 export class UserEntity {
@@ -49,9 +51,21 @@ export class UserEntity {
     @OneToMany(() => CommentEntity, (commentEntity) => commentEntity.author)
     comments: CommentEntity[];
 
+    @OneToMany(() => CommentEntity, (commentEntity) => commentEntity.author)
+    favorites: CommentEntity[];
+
     @OneToMany(() => FriendRequestEntity, (friendRequestEntity) => friendRequestEntity.creator)
     sentFriendRequests: FriendRequestEntity[];
 
     @OneToMany(() => FriendRequestEntity, (friendRequestEntity) => friendRequestEntity.receiver)
     receivedFriendRequests: FriendRequestEntity[];
+
+    @ManyToMany(
+        () => ConversationEntity,
+        (conversationEntity) => conversationEntity.users,
+    )
+    conversations: ConversationEntity[];
+
+    @OneToMany(() => MessageEntity, (messageEntity) => messageEntity.user)
+    messages: MessageEntity[];
 }

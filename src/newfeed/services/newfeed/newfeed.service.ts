@@ -37,6 +37,8 @@ export class NewfeedService {
         queryBuilder.where('post.authorId = :authorId', { authorId });
 
         queryBuilder.leftJoinAndSelect('post.author', 'author');
+        queryBuilder.leftJoinAndSelect('post.comments', 'comments');
+        queryBuilder.leftJoinAndSelect('post.favorites', 'favorites');
       
         return await queryBuilder.getMany();
     }
@@ -47,6 +49,8 @@ export class NewfeedService {
         queryBuilder.where('post.tagId = :tagId', { tagId });
 
         queryBuilder.leftJoinAndSelect('post.author', 'author');
+        queryBuilder.leftJoinAndSelect('post.comments', 'comments');
+        queryBuilder.leftJoinAndSelect('post.favorites', 'favorites');
       
         return await queryBuilder.getMany();
     }

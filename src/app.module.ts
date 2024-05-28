@@ -10,6 +10,7 @@ import { CommentModule } from './comment/comment.module';
 import { TagModule } from './tag/tag.module';
 import { MailerModule } from '@nest-modules/mailer';
 import { FavoriteModule } from './favorite/favorite.module';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { FavoriteModule } from './favorite/favorite.module';
     CommentModule,
     TagModule,
     FavoriteModule,
+    ChatModule
   ],
   controllers: [AppController],
   providers: [AppService],

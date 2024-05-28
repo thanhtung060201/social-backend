@@ -15,10 +15,10 @@ export class FavoriteEntity {
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;
 
-    @ManyToOne(() => UserEntity, (userEntity) => userEntity.comments)
+    @ManyToOne(() => UserEntity, (userEntity) => userEntity.favorites)
     author: UserEntity;
 
-    @ManyToOne(() => PostEntity, (postEntity) => postEntity.comments, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+    @ManyToOne(() => PostEntity, (postEntity) => postEntity.favorites, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
     post: PostEntity;
 
 }
