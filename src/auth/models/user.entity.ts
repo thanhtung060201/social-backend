@@ -6,6 +6,7 @@ import { CommentEntity } from "src/comment/models/comment.entity";
 import { FriendRequestEntity } from "./friend-request.entity";
 import { ConversationEntity } from "src/chat/models/conversation.entity";
 import { MessageEntity } from "src/chat/models/message.entity";
+import { NotificationEntity } from "src/notification/models/notification.entity";
 
 @Entity('user')
 export class UserEntity {
@@ -68,4 +69,10 @@ export class UserEntity {
 
     @OneToMany(() => MessageEntity, (messageEntity) => messageEntity.user)
     messages: MessageEntity[];
+
+    @OneToMany(() => NotificationEntity, (notificationEntity) => notificationEntity.creator)
+    notificationsSent: NotificationEntity[];
+
+    @OneToMany(() => NotificationEntity, (notificationEntity) => notificationEntity.receiver)
+    notificationsReceive: NotificationEntity[];
 }

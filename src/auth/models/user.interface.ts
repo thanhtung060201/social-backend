@@ -3,6 +3,7 @@ import { Role } from "./role.enum";
 import { CommentModel } from "src/comment/models/comment.interface";
 import { PostModel } from "src/newfeed/models/post.model";
 import { FriendRequestEntity } from "./friend-request.entity";
+import { NotificationEntity } from "src/notification/models/notification.entity";
 
 
 export class User {
@@ -22,4 +23,6 @@ export class User {
     comments?: CommentModel[];
     sentFriendRequests?: FriendRequestEntity[];
     receivedFriendRequests?: FriendRequestEntity[];
+    notificationsSent?: NotificationEntity[];
+    notificationsReceive?: NotificationEntity[];
 }

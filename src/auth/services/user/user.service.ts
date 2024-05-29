@@ -38,11 +38,12 @@ export class UserService {
   }
 
   searchUserByName(searchTerm: string): Observable<any> {
+    console.log(searchTerm);
     return from(this.userRepository.find({
-      where: [
+      where: searchTerm !== 'null' ? [
         { firstName: ILike(`%${searchTerm}%`) },
         { lastName: ILike(`%${searchTerm}%`) },
-      ],
+      ] : {},
     }));
   }
 
@@ -173,6 +174,17 @@ export class UserService {
     return from(
       this.friendRequestRepository.find({
         where: [{ receiver: currentUser }],
+        relations: ['receiver', 'creator'],
+      }),
+    );
+  }
+
+  getRequestsFriend(
+    currentUser: User,
+  ): Observable<FriendRequest[]> {
+    return from(
+      this.friendRequestRepository.find({
+        where: [{ receiver: currentUser, status: 'pending' }],
         relations: ['receiver', 'creator'],
       }),
     );

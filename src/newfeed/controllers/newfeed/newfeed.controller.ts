@@ -40,9 +40,15 @@ export class NewfeedController {
 
     @UseGuards(JwtGuard)
     @Get()
-    getAllPost(@Request() req): Observable<PostModel[]> {
-        return this.newfeedService.getAllPost(req.user);
+    getAllPost(@Request() req): Observable<any[]> {
+        return this.newfeedService.getAllPostWithFriend(req.user);
     }
+
+    // @UseGuards(JwtGuard)
+    // @Get('friend')
+    // getAllPostWidthFriend(@Request() req): any {
+    //     return this.newfeedService.getAllPostWithFriend(req.user);
+    // }
 
     @UseGuards(JwtGuard)
     @Put(':id')

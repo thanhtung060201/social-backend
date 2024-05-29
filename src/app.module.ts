@@ -11,6 +11,7 @@ import { TagModule } from './tag/tag.module';
 import { MailerModule } from '@nest-modules/mailer';
 import { FavoriteModule } from './favorite/favorite.module';
 import { ChatModule } from './chat/chat.module';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -43,7 +44,8 @@ import { ChatModule } from './chat/chat.module';
     CommentModule,
     TagModule,
     FavoriteModule,
-    ChatModule
+    ChatModule,
+    NotificationModule
   ],
   controllers: [AppController],
   providers: [AppService],

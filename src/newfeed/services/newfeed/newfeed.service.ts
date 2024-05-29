@@ -1,7 +1,8 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { from, map, Observable } from 'rxjs';
+import { from, map, Observable, switchMap } from 'rxjs';
+import { FriendRequestEntity } from 'src/auth/models/friend-request.entity';
 import { User } from 'src/auth/models/user.interface';
 import { PostEntity } from 'src/newfeed/models/post.entity';
 import { PostModel } from 'src/newfeed/models/post.model';
@@ -13,9 +14,50 @@ export class NewfeedService {
 
     constructor(
         @InjectRepository(PostEntity)
-        private readonly postRepository: Repository<PostEntity>
+        private readonly postRepository: Repository<PostEntity>,
+        @InjectRepository(FriendRequestEntity)
+        private readonly friendRequestRepository: Repository<FriendRequestEntity>,
     ) {
 
+    }
+
+    getAllPostWithFriend(currentUser: User) {
+        return from(
+            this.friendRequestRepository.find({
+                where: [
+                    { creator: currentUser, status: 'accepted' },
+                    { receiver: currentUser, status: 'accepted' },
+                ],
+                relations: ['creator', 'receiver'],
+            }),
+        ).pipe(
+            switchMap(async (friends: any[]) => {
+                let userIds: number[] = [];
+
+                friends.forEach((friend: any) => {
+                    if (friend.creator.id) {
+                        userIds.push(friend.receiver.id);
+                    } 
+                    if (friend.receiver.id) {
+                        userIds.push(friend.creator.id);
+                    }
+                });
+
+                userIds = Array.from(new Set(userIds));
+                console.log(userIds);
+
+                const posts = this.postRepository.find({
+                    relations: ['author', 'comments', 'favorites', 'tags'],
+                });
+
+                const newPost = (await posts).map((post) => ({
+                    ...post,
+                    userIds: userIds
+                }));
+
+                return newPost;
+            }),
+        );
     }
 
     createPost(user: User, post: PostModel, tags: TagModel[]): Observable<PostModel> {
@@ -39,7 +81,7 @@ export class NewfeedService {
         queryBuilder.leftJoinAndSelect('post.author', 'author');
         queryBuilder.leftJoinAndSelect('post.comments', 'comments');
         queryBuilder.leftJoinAndSelect('post.favorites', 'favorites');
-      
+
         return await queryBuilder.getMany();
     }
 
@@ -51,7 +93,7 @@ export class NewfeedService {
         queryBuilder.leftJoinAndSelect('post.author', 'author');
         queryBuilder.leftJoinAndSelect('post.comments', 'comments');
         queryBuilder.leftJoinAndSelect('post.favorites', 'favorites');
-      
+
         return await queryBuilder.getMany();
     }
 
