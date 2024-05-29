@@ -1,6 +1,5 @@
-import { User } from "./user.interface";
-
 /* eslint-disable prettier/prettier */
+import { User } from "./user.interface";
 export type FriendRequest_Status = 'pending' | 'accepted' | 'declined'
 
 export interface FriendRequestStatus {
