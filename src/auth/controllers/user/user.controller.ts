@@ -138,13 +138,21 @@ export class UserController {
       );
     }
   
-    // @UseGuards(JwtGuard)
+    @UseGuards(JwtGuard)
     @Get('friend-request/me/received-requests')
-    getFriendRequestsFromRecipients(
+    getRequestsFriend(
       @Request() req,
     ): Observable<FriendRequestStatus[]> {
-      return this.userService.getFriendRequestsFromRecipients(req.user);
+      return this.userService.getRequestsFriend(req.user);
     }
+
+    // @UseGuards(JwtGuard)
+    // @Get('friend-request/me/received-requests')
+    // getFriendRequestsFromRecipients(
+    //   @Request() req,
+    // ): Observable<FriendRequestStatus[]> {
+    //   return this.userService.getFriendRequestsFromRecipients(req.user);
+    // }
   
     @UseGuards(JwtGuard)
     @Get('friends/my')
