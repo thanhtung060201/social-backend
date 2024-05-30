@@ -65,7 +65,7 @@ export class NotificationService {
         return from(
             this.notificationRepository.find({
                 where: [{ receiver: currentUser }],
-                relations: ['receiver'],
+                relations: ['receiver', 'creator'],
             }),
         );
     }
